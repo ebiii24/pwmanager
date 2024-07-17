@@ -1,5 +1,6 @@
 package com.mbtc.passwordmanager.controller;
 
+import com.mbtc.passwordmanager.model.UrlCredential;
 import com.mbtc.passwordmanager.model.User;
 import com.mbtc.passwordmanager.repository.CredRepository;
 import com.mbtc.passwordmanager.repository.UserRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -76,13 +78,9 @@ public class AuthController {
         }
     }
 
-//    @DeleteMapping("/deleteAccount/{username}")
-//    public ResponseEntity<String> delAcc(@PathVariable username){
-//        userRepository.findByUsername(username);
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        userRepository.save(user);
-//        return new ResponseEntity<>("Deleted Account", HttpStatus.OK);
-//    }
-
-
+    @DeleteMapping("/deleteAccount/{id}")
+    public ResponseEntity<String> delAcc(@PathVariable("id") Integer id){
+        userRepository.deleteById(id);
+        return new ResponseEntity<>("Account Deleted", HttpStatus.ACCEPTED);
+    }
 }

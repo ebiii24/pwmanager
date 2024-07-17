@@ -1,5 +1,6 @@
 package com.mbtc.passwordmanager.controller;
 
+import com.mbtc.passwordmanager.model.UpdateEntry;
 import com.mbtc.passwordmanager.model.UrlCredential;
 import com.mbtc.passwordmanager.model.UrlEntry;
 import com.mbtc.passwordmanager.model.User;
@@ -65,14 +66,39 @@ public class CredentialController {
         }
     }
 
-    @DeleteMapping("/deleteCredentials/{credId}")
-    public ResponseEntity<String> delCred(@PathVariable("credId") Integer credId) {
+    @DeleteMapping("/deleteCredentials/{username}/{credId}")
+    public ResponseEntity<String> delCred(
+            @PathVariable("username") String username,
+            @PathVariable("credId") Integer credId){
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findByUsername(username));
 
-        if (!credRepository.existsById(credId)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            user.getUrlCredentials().removeIf(urlCredential -> urlCredential.getCredId() == credId);
+            userRepository.save(user);
             credRepository.deleteById(credId);
-            return new ResponseEntity<>("Deleted credential with ID: "+credId, HttpStatus.OK);
+            return new ResponseEntity<>("Credentials Deleted", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Credentials does not Exist", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/updateCredentials/{credId}")
+    public ResponseEntity<String> upCred(
+            @PathVariable("credId") Integer credId,
+            @RequestBody UpdateEntry updateEntry){
+
+        Optional<UrlCredential> urlCredential = credRepository.findById(credId);
+        if(urlCredential.isPresent()){
+            UrlCredential _urlCredential = urlCredential.get();
+            _urlCredential.setUrl(updateEntry.getUrl());
+            _urlCredential.setUrlPassword(updateEntry.getUrlPassword());
+            credRepository.save(_urlCredential);
+            return new ResponseEntity<>("Credentials Deleted", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Credentials Updated", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
