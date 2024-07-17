@@ -85,3 +85,4 @@ public class AuthController {
         return new ResponseEntity<>("Account Deleted", HttpStatus.ACCEPTED);
     }
 }
+
