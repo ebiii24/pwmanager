@@ -8,5 +8,4 @@ import lombok.Setter;
 public class UrlEntry {
     private String username;
     private String url;
-    private String urlPassword;
 }
