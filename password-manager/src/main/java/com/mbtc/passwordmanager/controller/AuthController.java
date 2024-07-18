@@ -78,6 +78,17 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/getAccountById/{id}")
+    public ResponseEntity<User> getById(@PathVariable("id") Integer id){
+
+        if(userRepository.existsById(id)){
+            return new ResponseEntity<>(userRepository.findById(id).get(), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/deleteAccount/{id}")
     public ResponseEntity<String> delAcc(@PathVariable("id") Integer id){
         userRepository.deleteById(id);
