@@ -1,12 +1,18 @@
 package com.mbtc.passwordmanager.controller;
 
+<<<<<<< HEAD
 import com.mbtc.passwordmanager.model.UpdateEntry;
+=======
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
 import com.mbtc.passwordmanager.model.UrlCredential;
 import com.mbtc.passwordmanager.model.UrlEntry;
 import com.mbtc.passwordmanager.model.User;
 import com.mbtc.passwordmanager.repository.CredRepository;
 import com.mbtc.passwordmanager.repository.UserRepository;
+<<<<<<< HEAD
 import com.mbtc.passwordmanager.util.Generator;
+=======
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +24,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+<<<<<<< HEAD
 @CrossOrigin(origins="localhost:3000")
+=======
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
 @RequestMapping("/credential")
 public class CredentialController {
 
@@ -41,7 +50,11 @@ public class CredentialController {
                             .findByUsername(urlEntry
                             .getUsername()).getId());
         urlCredential.setUrl(urlEntry.getUrl());
+<<<<<<< HEAD
         urlCredential.setUrlPassword(passwordEncoder.encode(Generator.generatePW(15)));
+=======
+        urlCredential.setUrlPassword(passwordEncoder.encode(urlEntry.getUrlPassword()));
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
 
         userRepository.findByUsername(urlEntry.getUsername()).getUrlCredentials().add(urlCredential);
         credRepository.save(urlCredential);
@@ -68,6 +81,7 @@ public class CredentialController {
         }
     }
 
+<<<<<<< HEAD
     @DeleteMapping("/deleteCredentials/{username}/{credId}")
     public ResponseEntity<String> delCred(
             @PathVariable("username") String username,
@@ -101,6 +115,16 @@ public class CredentialController {
         }
         else{
             return new ResponseEntity<>("Credentials NOT FOUND", HttpStatus.NO_CONTENT);
+=======
+    @DeleteMapping("/deleteCredentials/{credId}")
+    public ResponseEntity<String> delCred(@PathVariable("credId") Integer credId) {
+
+        if (!credRepository.existsById(credId)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            credRepository.deleteById(credId);
+            return new ResponseEntity<>("Deleted credential with ID: "+credId, HttpStatus.OK);
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
         }
     }
 }

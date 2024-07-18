@@ -1,6 +1,9 @@
 package com.mbtc.passwordmanager.controller;
 
+<<<<<<< HEAD
 import com.mbtc.passwordmanager.model.UrlCredential;
+=======
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
 import com.mbtc.passwordmanager.model.User;
 import com.mbtc.passwordmanager.repository.CredRepository;
 import com.mbtc.passwordmanager.repository.UserRepository;
@@ -18,10 +21,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins="localhost:3000")
+=======
+
+@RestController
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -79,6 +87,7 @@ public class AuthController {
         }
     }
 
+<<<<<<< HEAD
     @DeleteMapping("/deleteAccount/{id}")
     public ResponseEntity<String> delAcc(@PathVariable("id") Integer id){
         userRepository.deleteById(id);
@@ -86,3 +95,15 @@ public class AuthController {
     }
 }
 
+=======
+//    @DeleteMapping("/deleteAccount/{username}")
+//    public ResponseEntity<String> delAcc(@PathVariable username){
+//        userRepository.findByUsername(username);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        userRepository.save(user);
+//        return new ResponseEntity<>("Deleted Account", HttpStatus.OK);
+//    }
+
+
+}
+>>>>>>> 41229d689faede3eb57328b476ff58a4b5416b6e
