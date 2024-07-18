@@ -6,6 +6,7 @@ import com.mbtc.passwordmanager.model.UrlEntry;
 import com.mbtc.passwordmanager.model.User;
 import com.mbtc.passwordmanager.repository.CredRepository;
 import com.mbtc.passwordmanager.repository.UserRepository;
+import com.mbtc.passwordmanager.util.Generator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins="localhost:3000")
 @RequestMapping("/credential")
 public class CredentialController {
 
@@ -39,7 +41,7 @@ public class CredentialController {
                             .findByUsername(urlEntry
                             .getUsername()).getId());
         urlCredential.setUrl(urlEntry.getUrl());
-        urlCredential.setUrlPassword(passwordEncoder.encode(urlEntry.getUrlPassword()));
+        urlCredential.setUrlPassword(passwordEncoder.encode(Generator.generatePW(15)));
 
         userRepository.findByUsername(urlEntry.getUsername()).getUrlCredentials().add(urlCredential);
         credRepository.save(urlCredential);
@@ -93,12 +95,12 @@ public class CredentialController {
         if(urlCredential.isPresent()){
             UrlCredential _urlCredential = urlCredential.get();
             _urlCredential.setUrl(updateEntry.getUrl());
-            _urlCredential.setUrlPassword(updateEntry.getUrlPassword());
+            _urlCredential.setUrlPassword(passwordEncoder.encode(updateEntry.getUrlPassword()));
             credRepository.save(_urlCredential);
-            return new ResponseEntity<>("Credentials Deleted", HttpStatus.OK);
+            return new ResponseEntity<>("Credentials Updated", HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>("Credentials Updated", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("Credentials NOT FOUND", HttpStatus.NO_CONTENT);
         }
     }
 }
